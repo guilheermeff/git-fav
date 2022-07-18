@@ -2,6 +2,7 @@
 export class Favorites {
   constructor(root){
     this.root = document.querySelector(root)
+    this.loadData()
   }
   
   loadData() {
@@ -32,7 +33,7 @@ export class FavoritesView extends Favorites {
   update() {
     this.removeAllTr()
 
-
+    
   }
   
   addRow() {
