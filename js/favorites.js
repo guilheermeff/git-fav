@@ -16,8 +16,8 @@ export class Favorites {
       {
         login: "juliuscaezarff",
         name: "Julius Caezar",
-        public_repos: "50",
-        followers: "350"
+        public_repos: "510",
+        followers: "400"
       }
     ]
   }
@@ -27,13 +27,23 @@ export class FavoritesView extends Favorites {
   constructor(root){
     super(root)
 
+    this.tbody = this.root.querySelector('table tbody')
+
     this.update()
   }
   
   update() {
     this.removeAllTr()
+    this.data.forEach(user => {
+      const row = this.addRow()
+      
+      row.querySelector('.user img').src = `https://github.com/${user.login}.png`
+      row.querySelector('.user img').alt = `imagem de ${user.name}`
+      row.querySelector('.user a').href = `https://github.com/${user.login}`
+      row.querySelector('.user p').textContent = user.login
 
-    
+      this.tbody.append(row)
+    })
   }
   
   addRow() {
@@ -57,8 +67,6 @@ export class FavoritesView extends Favorites {
   }
   
   removeAllTr() {
-    this.tbody = this.root.querySelector('table tbody')
-    
     this.tbody.querySelectorAll('tr').forEach((tr) => {tr.remove()})
   }
 }
