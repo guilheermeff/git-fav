@@ -18,6 +18,12 @@ export class Favorites {
         name: "Julius Caezar",
         public_repos: "510",
         followers: "400"
+      },
+      {
+        login: "maykbrito",
+        name: "Mayk Britto",
+        public_repos: "50",
+        followers: "4090"
       }
     ]
   }
@@ -51,7 +57,7 @@ export class FavoritesView extends Favorites {
   
   addRow() {
     const tr = document.createElement('tr')
-    
+    console.log(tr)
     tr.innerHTML = `
         <td class="user">
           <img src="" alt="">
