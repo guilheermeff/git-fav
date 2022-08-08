@@ -1,8 +1,31 @@
+export class GitHubUser {
+  static search(username) {
+
+    const endpoint = `https://api.github.com/users/${username}`
+
+    return fetch(endpoint)
+    .then(elements => elements.json())
+    .then((elements) => {
+
+      const { login, name, public_repos, followers } = elements
+
+      return {
+        login: login,
+        name: name,
+        public_repos: public_repos,
+        followers: followers
+      }
+    })
+  }
+}
+
 // classe que vai fazer a lógica dos dados
 export class Favorites {
   constructor(root){
     this.root = document.querySelector(root)
     this.loadData()
+
+    GitHubUser.search('guilheermeff').then(user => console.log(user))
   }
   
   loadData() {
@@ -24,25 +47,27 @@ export class Favorites {
         name: "Mayk Britto",
         public_repos: "50",
         followers: "4090"
-      }
+      },
     ]
+
+    console.log(this.data)
   }
 }
 // classe que vai criar a vizualização e eventos html
 export class FavoritesView extends Favorites {
+  
   constructor(root){
     super(root)
-
+    console.log(this.root)
     this.tbody = this.root.querySelector('table tbody')
-
     this.update()
   }
-  
+
   update() {
     this.removeAllTr()
     this.data.forEach(user => {
       const row = this.addRow()
-      
+    
       row.querySelector('.user img').src = `https://github.com/${user.login}.png`
       row.querySelector('.user img').alt = `imagem de ${user.name}`
       row.querySelector('.user a').href = `https://github.com/${user.login}`
@@ -57,7 +82,6 @@ export class FavoritesView extends Favorites {
   
   addRow() {
     const tr = document.createElement('tr')
-    console.log(tr)
     tr.innerHTML = `
         <td class="user">
           <img src="" alt="">
