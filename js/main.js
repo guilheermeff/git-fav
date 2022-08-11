@@ -1,4 +1,4 @@
-
+import { GithubUser } from "./githubuser.js"
 // classe que vai conter a logica dos dos dados
 class Favorites {
   constructor(root) {
@@ -8,6 +8,11 @@ class Favorites {
 
   load() {
     this.entries = []
+  }
+
+  async add(username) {
+    const user = await GithubUser.search(username)
+    console.log(user)
   }
 }
 //classe que vai conter a vizualização dos dados
@@ -30,7 +35,7 @@ class FavoritesView extends Favorites {
     addButton.onclick = () => {
       const userName = this.page.querySelector('#input-search')
       // include verification steps
-      this.addUser(userName.value)
+      console.log(this.add(userName.value))
     }
   }
 
