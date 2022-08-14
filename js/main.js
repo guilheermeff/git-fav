@@ -3,19 +3,35 @@ import { GithubUser } from "./githubuser.js"
 class Favorites {
   constructor(root) {
     this.page = document.querySelector(root)
+    this.load()
   }
 
   load() {
-    this.entries = []
+    this.entries = JSON.parse(localStorage.getItem('@github_fav:')) || []
+    console.log(this.entries)
+  }
+
+  save(){
+    localStorage.setItem('@github_fav:', JSON.stringify(this.entries))
+    console.log(this.entries)
   }
 
   async add(user) {
     
     const userdata = await GithubUser.search(user)
-
+    console.log(userdata)
     this.addRow(userdata)
+
+    this.entries = [userdata, ...this.entries]
+    this.save()
   }
 
+  delete(user){
+    const filteredEntries = this.entries.filter(entrie => entrie.login !== user.login)
+
+    this.entries = filteredEntries
+    this.save()
+  }
   
 }
 //classe que vai conter a vizualização dos dados
