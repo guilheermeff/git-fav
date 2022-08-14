@@ -3,17 +3,20 @@ import { GithubUser } from "./githubuser.js"
 class Favorites {
   constructor(root) {
     this.page = document.querySelector(root)
-    console.log(this.load())
   }
 
   load() {
     this.entries = []
   }
 
-  async add(username) {
-    const user = await GithubUser.search(username)
-    console.log(user)
+  async add(user) {
+    
+    const userdata = await GithubUser.search(user)
+
+    this.addRow(userdata)
   }
+
+  
 }
 //classe que vai conter a vizualização dos dados
 class FavoritesView extends Favorites {
@@ -27,28 +30,27 @@ class FavoritesView extends Favorites {
 
   update() {
     this.removeAllRows()
-    this.addRow()
   }
 
   getUserName() {
     const addButton = this.page.querySelector('.search button')
     addButton.onclick = () => {
-      const userName = this.page.querySelector('#input-search')
-      // include verification steps
-      console.log(this.add(userName.value))
+      const inputBox = this.page.querySelector('#input-search')
+      const username = inputBox.value
+      this.add(username)
     }
   }
 
-  addRow() {
+  addRow(user) {
     const row = this.createRow()
 
-    row.querySelector('.user img').src = `https://github.com/guilheermeff.png`
-    row.querySelector('.user img').alt = `imagem de Guilherme Fernandes`
-    row.querySelector('.user a').href = `https://github.com/guilheermeff`
-    row.querySelector('.user p').textContent = `Guilherme Fernandes`
-    row.querySelector('.user span').textContent = `guilheermeff`
-    row.querySelector('.repositories').textContent = `80`
-    row.querySelector('.followers').textContent = `100`
+    row.querySelector('.user img').src = `https://github.com/${user.login}.png`
+    row.querySelector('.user img').alt = `imagem de ${user.name}`
+    row.querySelector('.user a').href = `https://github.com/${user.login}`
+    row.querySelector('.user p').textContent = user.name
+    row.querySelector('.user span').textContent = user.login
+    row.querySelector('.repositories').textContent = user.public_repos
+    row.querySelector('.followers').textContent = user.followers
 
     this.tbody.append(row)
   }
