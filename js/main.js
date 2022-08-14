@@ -37,7 +37,17 @@ class FavoritesView extends Favorites {
     addButton.onclick = () => {
       const inputBox = this.page.querySelector('#input-search')
       const username = inputBox.value
-      this.add(username)
+
+      const userNotFound = username == undefined
+      const untypedUser = username === ""
+
+      if(userNotFound){
+        alert('Usuário não encontrado!')
+      } else if(untypedUser){
+        alert('Digite um nome de usuário para adicionar!')
+      } else {
+        this.add(username)
+      }
     }
   }
 
