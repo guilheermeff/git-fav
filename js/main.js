@@ -19,20 +19,11 @@ class Favorites {
   async add(user) {
     
     const userdata = await GithubUser.search(user)
-    console.log(userdata)
-    this.addRow(userdata)
-
+    this.addRow()
+    this.save()
     this.entries = [userdata, ...this.entries]
-    this.save()
+    
   }
-
-  delete(user){
-    const filteredEntries = this.entries.filter(entrie => entrie.login !== user.login)
-
-    this.entries = filteredEntries
-    this.save()
-  }
-  
 }
 //classe que vai conter a vizualização dos dados
 class FavoritesView extends Favorites {
@@ -40,12 +31,8 @@ class FavoritesView extends Favorites {
     super(root)
     this.tbody = this.page.querySelector('table tbody')
 
-    this.update()
+    this.addRow()
     this.getUserName()
-  }
-
-  update() {
-    this.removeAllRows()
   }
 
   getUserName() {
@@ -67,18 +54,22 @@ class FavoritesView extends Favorites {
     }
   }
 
-  addRow(user) {
-    const row = this.createRow()
+  addRow() {
+    this.removeAllRows()
 
-    row.querySelector('.user img').src = `https://github.com/${user.login}.png`
-    row.querySelector('.user img').alt = `imagem de ${user.name}`
-    row.querySelector('.user a').href = `https://github.com/${user.login}`
-    row.querySelector('.user p').textContent = user.name
-    row.querySelector('.user span').textContent = user.login
-    row.querySelector('.repositories').textContent = user.public_repos
-    row.querySelector('.followers').textContent = user.followers
+    this.entries.forEach(user => {
+      const row = this.createRow()
+      
+      row.querySelector('.user img').src = `https://github.com/${user.login}.png`
+      row.querySelector('.user img').alt = `imagem de ${user.name}`
+      row.querySelector('.user a').href = `https://github.com/${user.login}`
+      row.querySelector('.user p').textContent = user.name
+      row.querySelector('.user span').textContent = user.login
+      row.querySelector('.repositories').textContent = user.public_repos
+      row.querySelector('.followers').textContent = user.followers
 
-    this.tbody.append(row)
+      this.tbody.append(row)
+    })
   }
   
   createRow() {
