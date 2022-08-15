@@ -26,7 +26,7 @@ class Favorites {
   }
 
   delete(user) {
-    const filteredEntries = this.entries.filter(element => {element.login !== user.login})
+    const filteredEntries = this.entries.filter(element => element.login !== user.login)
 
     this.entries = filteredEntries
     this.addRow()
