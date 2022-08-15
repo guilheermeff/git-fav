@@ -24,6 +24,14 @@ class Favorites {
     this.entries = [userdata, ...this.entries]
     
   }
+
+  delete(user) {
+    const filteredEntries = this.entries.filter(element => {element.login !== user.login})
+
+    this.entries = filteredEntries
+    this.addRow()
+    this.save()
+  }
 }
 //classe que vai conter a vizualização dos dados
 class FavoritesView extends Favorites {
@@ -68,6 +76,15 @@ class FavoritesView extends Favorites {
       row.querySelector('.repositories').textContent = user.public_repos
       row.querySelector('.followers').textContent = user.followers
 
+
+      const removeButton = row.querySelector('.remove')
+      removeButton.onclick = () => {
+        const confirmation = confirm('Tem certeza que deseja excluir este usuário?')
+
+        if(confirmation){
+          this.delete(user)
+        }
+      }
       this.tbody.append(row)
     })
   }
