@@ -17,12 +17,27 @@ class Favorites {
   }
 
   async add(user) {
-    
-    const userdata = await GithubUser.search(user)
-    this.addRow()
-    this.save()
-    this.entries = [userdata, ...this.entries]
-    
+    try {
+      const userExist = this.entries.find(entrie => entrie.login === user)
+
+      if(userExist) {
+        throw new Error('O usuário informado já está cadastrado!')
+      }
+
+      const userdata = await GithubUser.search(user)
+      const userNotFound = userdata.login === undefined
+
+      if(userNotFound) {
+        throw new Error('Usuário não encontrado!')
+      }
+
+      this.entries = [userdata, ...this.entries]
+      this.addRow()
+      this.save()
+      
+    } catch(error) {
+      alert(error.message)
+    }
   }
 
   delete(user) {
@@ -49,16 +64,7 @@ class FavoritesView extends Favorites {
       const inputBox = this.page.querySelector('#input-search')
       const username = inputBox.value
 
-      const userNotFound = username == undefined
-      const untypedUser = username === ""
-
-      if(userNotFound){
-        alert('Usuário não encontrado!')
-      } else if(untypedUser){
-        alert('Digite um nome de usuário para adicionar!')
-      } else {
-        this.add(username)
-      }
+      this.add(username)
     }
   }
 
